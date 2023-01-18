@@ -1,0 +1,18 @@
+{
+  "packages": [
+    "nodejs",
+    "yarn",
+    "rbenv",
+    "openssl",
+    "vim",
+    "libyaml",
+    "zlib",
+    "postgresql"
+  ],
+  "shell": {
+    "init_hook": null
+  },
+  "nixpkgs": {
+    "commit": "52e3e80afff4b16ccb7c52e9f0f5220552f03d04"
+  }
+}
