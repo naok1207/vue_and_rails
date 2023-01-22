@@ -104,6 +104,9 @@ RUBY_CONFIGURE_OPTS="--with-openssl-dir=/usr/local/$(devbox info openssl)" rbenv
 ruby -v
 ```
 
+**スクリプトファイル**
+bin/setup-ruby.sh
+
 ### postgresql をインストール
 ```
 devbox add postgresql
@@ -124,14 +127,18 @@ bundle install
 bundle config set path 'vendor/bundle'
 ```
 
+```
+mkdir server
+```
+
 `esbuild` の場合
 ```
-rails new server -d=postgresql --css=tailwind --skip-jbuilder -M -T -j esbuild --skip-bundle
+rails new . -d=postgresql --css=tailwind --skip-jbuilder -M -T -j esbuild --skip-bundle
 ```
 
 `vite`の場合
 ```
-rails new server -d=postgresql --skip-jbuilder -M -T --skip-bundle
+rails new . -d=postgresql --skip-jbuilder -M -T --skip-bundle
 ```
 
 `tzinfo-data`のエラーが発生するので以下のように`Gemfile`を修正
@@ -147,7 +154,6 @@ sed -i 's/gem "tzinfo-data", platforms: %i\[ mingw mswin x64_mingw jruby \]/gem 
 
 **追加コマンド**
 ```
-cd server
 bundle install
 bundle binstubs bundler
 ```
@@ -162,3 +168,6 @@ docs/02-typescript-esbuild.md
 ### videのセットアップ + typescriptの導入
 検証済み
 docs/03-typescript-vite.md
+
+スクリプト
+bin/setup-vite.sh

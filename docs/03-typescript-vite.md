@@ -5,13 +5,25 @@
 gem 'vite_rails'
 ```
 
+`importmap`は利用しないので削除
+```diff Gemfile:Gemfile
++ # gem "importmap-rails"
+- gem "importmap-rails"
 ```
+
+ワンライン
+```sh
+sed -i 's/gem "importmap-rails"/# gem "importmap-rails"/g' Gemfile
+```
+
+```sh
 bundle install
 bundle exec vite install
 rails  turbo:install stimulus:install
 yarn add -D vite-plugin-full-reload
 ```
 
+hotreloadを追加する
 `vite.config.ts`を修正する
 ```ts:vite.config.ts
 // vite.config.ts
@@ -135,6 +147,71 @@ EOL
   }
 }
 ```
+
+## tailwind の導入
+### tailwindcss-rails を利用した方法
+```Gemfile
+gem "tailwindcss-rails"
+```
+
+```
+bundle install
+rails tailwindcss:install
+```
+
+`bin/dev` で起動確認
+
+自動で作られる　`tailwind.config.js`
+```js
+const defaultTheme = require('tailwindcss/defaultTheme')
+
+module.exports = {
+  content: [
+    './public/*.html',
+    './app/helpers/**/*.rb',
+    './app/javascript/**/*.js',
+    './app/views/**/*.{erb,haml,html,slim}'
+  ],
+  theme: {
+    extend: {
+      fontFamily: {
+        sans: ['Inter var', ...defaultTheme.fontFamily.sans],
+      },
+    },
+  },
+  plugins: [
+    require('@tailwindcss/forms'),
+    require('@tailwindcss/aspect-ratio'),
+    require('@tailwindcss/typography'),
+  ]
+}
+```
+
+`Procfile.dev`に追加される内容
+```
+css: bin/rails tailwindcss:watch
+```
+
+### vite を利用した方法
+```sh
+yarn add -D tailwindcss postcss autoprefixer
+yarn run tailwindcss init -p
+```
+
+tailwindcssをインポートするcssファイルを作成
+`frontend/entrypoints/application.css`
+```
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+```
+
+`views/layouts/application.html`に追加する
+```
+<%= vite_stylesheet_tag 'application' %>
+```
+
+`vite`を使用した方法であれば、`bin/dev`を変更せずともviteがtailwindのコンパイルを行ってくれる。
 
 ## 参考
 https://zenn.dev/shu_illy/articles/a0ad61ef62e0d4

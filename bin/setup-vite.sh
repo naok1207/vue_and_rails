@@ -11,6 +11,7 @@ export default defineConfig({
   ],
 });
 EOL
+sed -i 's/gem "importmap-rails"/# gem "importmap-rails"/g' Gemfile
 bundle install
 bundle exec vite install
 rails  turbo:install stimulus:install
